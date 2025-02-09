@@ -41,6 +41,23 @@ document.addEventListener('DOMContentLoaded', function() {
     editorDiv.addEventListener('mouseup', updateButtonStates);
     editorDiv.addEventListener('selectionchange', updateButtonStates);
 
+    // Initialize Commento
+    let commentoInstance = null;
+
+    function initCommento() {
+        // Wait for Commento to load
+        if (typeof window.commento === 'undefined') {
+            setTimeout(initCommento, 100);
+            return;
+        }
+        
+        // Initialize Commento in the hidden div
+        window.commento.main();
+        commentoInstance = window.commento;
+    }
+
+    initCommento();
+
     // Add form submission handler
     document.querySelector('.add-entry').addEventListener('click', function(e) {
         e.preventDefault();
@@ -53,8 +70,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Call Commento's API to submit the comment
-        window.commento.comment(commentText, null, function(error) {
+        // Make sure Commento is initialized
+        if (!commentoInstance) {
+            alert('Comment system is still loading. Please try again in a moment.');
+            return;
+        }
+
+        // Create a temporary div to hold the comment HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = commentText;
+
+        // Submit comment through Commento's API
+        commentoInstance.postComment({
+            name: nameInput.value,
+            comment: tempDiv.textContent, // Strip HTML for safety
+            parent: null
+        }, function(error) {
             if (error) {
                 console.error('Error posting comment:', error);
                 alert('Error posting comment. Please try again.');
@@ -66,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             editorDiv.innerHTML = '';
             
             // Refresh comments
-            window.commento.main();
+            commentoInstance.loadComments();
         });
     });
 
@@ -74,5 +105,43 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.cancel').addEventListener('click', function() {
         document.getElementById('name').value = '';
         editorDiv.innerHTML = '';
+    });
+
+    // Observer to sync Commento comments with our UI
+    const commentsObserver = new MutationObserver(function(mutations) {
+        const commentoComments = document.querySelectorAll('#commento .commento-card');
+        const commentsSection = document.querySelector('.comments-section');
+        
+        // Clear existing comments
+        commentsSection.innerHTML = '';
+        
+        // Convert Commento comments to our UI format
+        commentoComments.forEach(commentoComment => {
+            const name = commentoComment.querySelector('.commento-name').textContent;
+            const body = commentoComment.querySelector('.commento-body').textContent;
+            const time = commentoComment.querySelector('.commento-timeago').textContent;
+            
+            const commentHTML = `
+                <div class="comment">
+                    <div class="comment-header">
+                        <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
+                        <div class="comment-meta">
+                            <div class="commenter-name">${name}</div>
+                            <div class="comment-time">${time}</div>
+                        </div>
+                        <button class="more-options">⋮</button>
+                    </div>
+                    <div class="comment-body">${body}</div>
+                </div>
+            `;
+            
+            commentsSection.insertAdjacentHTML('beforeend', commentHTML);
+        });
+    });
+
+    // Start observing the Commento div for changes
+    commentsObserver.observe(document.getElementById('commento'), {
+        childList: true,
+        subtree: true
     });
 }); 
