@@ -9,12 +9,19 @@
     <link rel="stylesheet" href="discussions.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
+        // Get the current photo number from URL
+        function getCurrentPhotoId() {
+            const path = window.location.pathname;
+            const match = path.match(/photo(\d+)\.html/);
+            return match ? `photo-${match[1]}` : 'general';
+        }
+
         window.commentoConfig = {
             hideDeleted: true,
             noFonts: true,
             autoInit: false,
             cssOverride: '',
-            pageId: window.location.pathname,
+            pageId: getCurrentPhotoId(), // Use photo-specific ID
             siteId: 'paste-your-actual-commento-site-id-here',
             commentoAuth: {
                 anonymous: true,

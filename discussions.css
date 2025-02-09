@@ -6,6 +6,9 @@
     margin: 15px;
     max-width: 100%;
     box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .form-group {
@@ -118,6 +121,24 @@ input[type="text"] {
 .comments-section {
     margin-top: 20px;
     padding: 0 15px;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #D1D1D6 transparent;
+}
+
+.comments-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comments-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.comments-section::-webkit-scrollbar-thumb {
+    background-color: #D1D1D6;
+    border-radius: 3px;
 }
 
 .comment {
@@ -178,6 +199,8 @@ input[type="text"] {
 
 body {
     background: #F5F5F5;
+    overflow: hidden;
+    height: 100vh;
 }
 
 #commento {
@@ -192,10 +215,6 @@ body {
 #commento * {
     visibility: visible !important;
     opacity: 1 !important;
-}
-
-.comments-section {
-    /* Keep your existing styling */
 }
 
 .comment-photo-link {
