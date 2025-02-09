@@ -76,6 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start initialization after DOM is ready
     initCommento();
 
+    // Add this function at the top level of your DOMContentLoaded callback
+    function setCommentoName(name) {
+        window.commentoCommenterName = name;
+        // Try multiple ways to set the name
+        if (window.commento) {
+            window.commento.commenterName = name;
+            if (typeof window.commento.setConfig === 'function') {
+                window.commento.setConfig({ commenterName: name });
+            }
+        }
+        localStorage.setItem('commento-commenter-name', name);
+    }
+
     // Add form submission handler
     document.querySelector('.add-entry').addEventListener('click', function(e) {
         e.preventDefault();
@@ -124,22 +137,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // Set the comment text
-                elements.commentBox.value = tempDiv.textContent;
+                // Create a comment object with metadata
+                const commentData = {
+                    name: nameInput.value,
+                    body: tempDiv.textContent.trim(),
+                    timestamp: new Date().toISOString()
+                };
+
+                // Convert to JSON and store in Commento's comment box
+                elements.commentBox.value = JSON.stringify(commentData);
                 elements.commentBox.dispatchEvent(new Event('input', { bubbles: true }));
 
-                // If we have a name field, set it
-                if (elements.nameField) {
-                    elements.nameField.value = nameInput.value;
-                    elements.nameField.dispatchEvent(new Event('input', { bubbles: true }));
-                } else {
-                    // If no name field found, try setting it through Commento's API
-                    if (window.commento && typeof window.commento.setName === 'function') {
-                        window.commento.setName(nameInput.value);
-                    }
-                }
-
-                console.log('About to click submit button');
+                console.log('Submitting comment with data:', commentData);
                 elements.submitButton.click();
                 
                 // Clear our form
@@ -182,9 +191,31 @@ document.addEventListener('DOMContentLoaded', function() {
         // Convert Commento comments to our UI format
         commentoCards.forEach((card, index) => {
             try {
-                const name = card.querySelector('.commento-name')?.textContent || 'Anonymous';
-                const body = card.querySelector('.commento-body')?.textContent || '';
-                const time = card.querySelector('.commento-timeago')?.textContent || '';
+                const commentText = card.querySelector('.commento-body')?.textContent || '';
+                let name = 'Anonymous';
+                let body = commentText;
+                let time = card.querySelector('.commento-timeago')?.textContent || '';
+
+                // Try to parse the comment as JSON
+                try {
+                    const commentData = JSON.parse(commentText);
+                    name = commentData.name || 'Anonymous';
+                    body = commentData.body || '';
+                    // Use the stored timestamp if available
+                    if (commentData.timestamp) {
+                        const date = new Date(commentData.timestamp);
+                        const now = new Date();
+                        const diffMinutes = Math.floor((now - date) / 1000 / 60);
+                        
+                        if (diffMinutes < 1) time = 'just now';
+                        else if (diffMinutes < 60) time = `${diffMinutes} minutes ago`;
+                        else if (diffMinutes < 1440) time = `${Math.floor(diffMinutes/60)} hours ago`;
+                        else time = `${Math.floor(diffMinutes/1440)} days ago`;
+                    }
+                } catch (e) {
+                    // If not JSON, use the comment text as-is
+                    body = commentText;
+                }
                 
                 console.log(`Processing comment ${index}:`, { name, body, time });
                 
