@@ -181,7 +181,17 @@ body {
 }
 
 #commento {
-    display: none !important;
+    position: absolute;
+    left: -9999px;
+    width: 320px; /* Give it some width to ensure proper rendering */
+    height: auto;
+    overflow: hidden;
+}
+
+/* Ensure Commento's elements are not completely hidden */
+#commento * {
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .comments-section {

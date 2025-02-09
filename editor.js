@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function initCommento() {
         // Wait for Commento script to load
         if (typeof window.commento === 'undefined') {
+            console.log('Waiting for Commento to load...');
             setTimeout(initCommento, 100);
             return;
         }
@@ -53,18 +54,32 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize Commento in the hidden div
             window.commento.main();
             console.log('Commento initialized successfully');
+            
+            // Verify Commento elements are created
+            setTimeout(() => {
+                const commentBox = document.querySelector('#commento textarea');
+                const submitButton = document.querySelector('#commento .commento-submit-button');
+                const nameField = document.querySelector('#commento input[name="commento-name"]');
+                
+                console.log('Commento elements check:', {
+                    commentBox: !!commentBox,
+                    submitButton: !!submitButton,
+                    nameField: !!nameField
+                });
+            }, 1000);
         } catch (error) {
             console.error('Error initializing Commento:', error);
             setTimeout(initCommento, 100);
         }
     }
 
-    // Start initialization after a short delay to ensure DOM is ready
-    setTimeout(initCommento, 500);
+    // Start initialization after DOM is ready
+    initCommento();
 
     // Add form submission handler
     document.querySelector('.add-entry').addEventListener('click', function(e) {
         e.preventDefault();
+        console.log('Add Entry button clicked');
         
         const nameInput = document.getElementById('name');
         const commentText = editorDiv.innerHTML;
@@ -74,46 +89,49 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        console.log('Form data:', {
+            name: nameInput.value,
+            comment: commentText
+        });
+
         // Create a temporary div to hold the comment HTML
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = commentText;
 
-        // Wait for Commento to be fully loaded
+        // Function to find Commento elements
+        function findCommentoElements() {
+            const elements = {
+                commentBox: document.querySelector('#commento textarea'),
+                submitButton: document.querySelector('#commento .commento-submit-button'),
+                nameField: document.querySelector('#commento input[name="commento-name"]')
+            };
+            
+            console.log('Found Commento elements:', elements);
+            return elements;
+        }
+
+        // Function to submit comment
         function submitComment() {
-            const commentoRoot = document.querySelector('#commento');
-            const commentBox = document.querySelector('#commento textarea');
-            const submitButton = document.querySelector('#commento .commento-submit-button');
-            const nameField = document.querySelector('#commento input[name="commento-name"]');
-
-            console.log('Commento elements:', {
-                root: commentoRoot,
-                commentBox: commentBox,
-                submitButton: submitButton,
-                nameField: nameField
-            });
-
-            if (!commentBox || !submitButton || !nameField) {
-                console.log('Waiting for Commento elements to load...');
-                setTimeout(submitComment, 100);
+            const elements = findCommentoElements();
+            
+            if (!elements.commentBox || !elements.submitButton || !elements.nameField) {
+                console.log('Commento elements not ready, reinitializing...');
+                window.commento.main();
+                setTimeout(submitComment, 500);
                 return;
             }
 
             try {
                 // Set the values
-                nameField.value = nameInput.value;
-                commentBox.value = tempDiv.textContent;
-                console.log('Values set:', {
-                    name: nameField.value,
-                    comment: commentBox.value
-                });
+                elements.nameField.value = nameInput.value;
+                elements.commentBox.value = tempDiv.textContent;
 
-                // Trigger events to ensure Commento recognizes the input
-                nameField.dispatchEvent(new Event('input'));
-                commentBox.dispatchEvent(new Event('input'));
+                // Trigger input events
+                elements.nameField.dispatchEvent(new Event('input', { bubbles: true }));
+                elements.commentBox.dispatchEvent(new Event('input', { bubbles: true }));
 
-                // Trigger the submit
-                console.log('Clicking submit button...');
-                submitButton.click();
+                console.log('About to click submit button');
+                elements.submitButton.click();
                 
                 // Clear our form
                 nameInput.value = '';
@@ -126,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Start the submission process
         submitComment();
     });
 
