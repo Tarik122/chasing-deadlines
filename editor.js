@@ -228,11 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Add photo information if available
                     if (commentData.photo) {
-                        photoInfo = `
-                            <a href="discussions.html?photo=${commentData.photo.number}" class="comment-photo-link">
-                                Photo ${commentData.photo.number}: ${commentData.photo.title}
-                            </a>
-                        `;
+                        photoInfo = `<span class="time-separator">•</span><a href="discussions.html?photo=${commentData.photo.number}" class="comment-photo-link">Photo ${commentData.photo.number}: ${commentData.photo.title}</a>`;
                     }
 
                     // Use the stored timestamp if available
@@ -259,8 +255,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
                             <div class="comment-meta">
                                 <div class="commenter-name">${name}</div>
-                                <div class="comment-time">${time}</div>
-                                ${photoInfo}
+                                <div class="comment-time">
+                                    ${time}${photoInfo}
+                                </div>
                             </div>
                             <button class="more-options">⋮</button>
                         </div>

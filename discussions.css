@@ -178,6 +178,14 @@ input[type="text"] {
     color: #666;
     font-size: 13px;
     margin-top: 1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.time-separator {
+    color: #666;
+    margin: 0 2px;
 }
 
 .more-options {
@@ -220,11 +228,10 @@ body {
 }
 
 .comment-photo-link {
-    display: block;
-    color: var(--primary-blue);
+    color: #666;
     font-size: 13px;
     text-decoration: none;
-    margin-top: 2px;
+    margin-top: 0;
 }
 
 .comment-photo-link:hover {
