@@ -40,129 +40,39 @@ document.addEventListener('DOMContentLoaded', function() {
     editorDiv.addEventListener('keyup', updateButtonStates);
     editorDiv.addEventListener('mouseup', updateButtonStates);
     editorDiv.addEventListener('selectionchange', updateButtonStates);
-});
 
-// Add this function to help debug API calls
-async function debugApiCall(url, options) {
-    try {
-        const start = Date.now();
-        const response = await fetch(url, options);
-        const duration = Date.now() - start;
+    // Add form submission handler
+    document.querySelector('.add-entry').addEventListener('click', function(e) {
+        e.preventDefault();
         
-        console.log(`API Call to ${url} (${duration}ms):`, {
-            status: response.status,
-            headers: Object.fromEntries(response.headers.entries()),
-            body: await response.text().catch(() => 'Unable to parse response')
-        });
-
-        return response;
-    } catch (error) {
-        console.error(`API Call to ${url} failed:`, error);
-        throw error;
-    }
-}
-
-// Update the submit handler
-document.querySelector('.add-entry').addEventListener('click', async function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const body = document.getElementById('editor').textContent; // Use text instead of HTML
-    
-    if (!body.trim()) {
-        alert('Please enter some content before submitting!');
-        return;
-    }
-
-    try {
-        const response = await debugApiCall('https://cusdis.com/api/v2/comments', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${window.CUSDIS.appId}`
-            },
-            body: JSON.stringify({
-                content: body,
-                by_nick: name || 'Anonymous',
-                pageId: window.CUSDIS.pageId,
-                pageUrl: window.CUSDIS.pageUrl,
-                pageTitle: window.CUSDIS.pageTitle,
-                status: 'approved'
-            })
-        });
-
-        const result = await response.json();
-        console.log('Submission result:', result);
-
-        if (!response.ok) {
-            throw new Error(result.message || `HTTP error ${response.status}`);
-        }
-
-        // Clear fields and reload
-        document.getElementById('name').value = '';
-        document.getElementById('editor').innerHTML = '';
-        await loadCusdisComments();
-
-    } catch (error) {
-        console.error('Submission failed:', error);
-        alert(`Submission failed: ${error.message}\nCheck console for details.`);
-    }
-});
-
-// Update the comments loader
-async function loadCusdisComments() {
-    try {
-        const response = await debugApiCall(
-            `https://cusdis.com/api/v2/comments?pageId=${encodeURIComponent(window.CUSDIS.pageId)}&withUser=true`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${window.CUSDIS.appId}`
-                }
-            }
-        );
-
-        const rawData = await response.text();
-        const result = JSON.parse(rawData); // Handle non-JSON responses
-        console.log('Comments API result:', result);
-
-        if (!response.ok) {
-            throw new Error(result.error?.message || `HTTP ${response.status} Error`);
-        }
-
-        const commentsSection = document.querySelector('.comments-section');
-        commentsSection.innerHTML = '';
-
-        if (!result.data?.length) {
-            commentsSection.innerHTML = '<div class="comment">No comments yet. Be the first to add one!</div>';
+        const nameInput = document.getElementById('name');
+        const commentText = editorDiv.innerHTML;
+        
+        if (!nameInput.value.trim() || !commentText.trim()) {
+            alert('Please fill in all required fields');
             return;
         }
 
-        result.data.forEach(comment => {
-            const commentHtml = `
-                <div class="comment">
-                    <div class="comment-header">
-                        <div class="user-icon">${(comment.by_nick || '?')[0].toUpperCase()}</div>
-                        <div class="comment-meta">
-                            <div class="commenter-name">${comment.by_nick || 'Anonymous'}</div>
-                            <div class="comment-time">${new Date(comment.createdAt).toLocaleString()}</div>
-                        </div>
-                    </div>
-                    <div class="comment-body">${comment.content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-                </div>
-            `;
-            commentsSection.insertAdjacentHTML('beforeend', commentHtml);
+        // Call Commento's API to submit the comment
+        window.commento.comment(commentText, null, function(error) {
+            if (error) {
+                console.error('Error posting comment:', error);
+                alert('Error posting comment. Please try again.');
+                return;
+            }
+            
+            // Clear the form
+            nameInput.value = '';
+            editorDiv.innerHTML = '';
+            
+            // Refresh comments
+            window.commento.main();
         });
+    });
 
-    } catch (error) {
-        console.error('Comments load error:', error);
-        document.querySelector('.comments-section').innerHTML = `
-            <div class="comment error">
-                Error: ${error.message}<br>
-                Check console (F12) for details
-            </div>
-        `;
-    }
-}
-
-// Load comments when page loads
-document.addEventListener('DOMContentLoaded', loadCusdisComments); 
+    // Handle cancel button
+    document.querySelector('.cancel').addEventListener('click', function() {
+        document.getElementById('name').value = '';
+        editorDiv.innerHTML = '';
+    });
+}); 
