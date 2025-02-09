@@ -196,4 +196,27 @@ body {
 
 .comments-section {
     /* Keep your existing styling */
+}
+
+.photo-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+}
+
+.header-info {
+    flex: 1;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2px;
+}
+
+.header-title {
+    font-size: 17px;
+    font-weight: 500;
+    color: white;
 } 

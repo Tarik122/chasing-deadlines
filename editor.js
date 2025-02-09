@@ -125,6 +125,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return elements;
         }
 
+        // Get photo information from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const photoId = urlParams.get('photo');
+        let photoTitle = '';
+        
+        // Get photo title from photoData
+        if (photoId && window.photoData && window.photoData[photoId]) {
+            photoTitle = window.photoData[photoId].title;
+            document.getElementById('photoTitle').textContent = photoTitle;
+        }
+
         // Function to submit comment
         function submitComment() {
             const elements = findCommentoElements();
@@ -141,7 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const commentData = {
                     name: nameInput.value,
                     body: tempDiv.textContent.trim(),
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    photoId: photoId,
+                    photoTitle: photoTitle
                 };
 
                 // Convert to JSON and store in Commento's comment box
@@ -195,12 +208,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 let name = 'Anonymous';
                 let body = commentText;
                 let time = card.querySelector('.commento-timeago')?.textContent || '';
+                let photoRef = '';
 
                 // Try to parse the comment as JSON
                 try {
                     const commentData = JSON.parse(commentText);
                     name = commentData.name || 'Anonymous';
                     body = commentData.body || '';
+                    photoRef = commentData.photoTitle ? ` on "${commentData.photoTitle}"` : '';
+                    
                     // Use the stored timestamp if available
                     if (commentData.timestamp) {
                         const date = new Date(commentData.timestamp);
@@ -225,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
                             <div class="comment-meta">
                                 <div class="commenter-name">${name}</div>
-                                <div class="comment-time">${time}</div>
+                                <div class="comment-time">${time}${photoRef}</div>
                             </div>
                             <button class="more-options">⋮</button>
                         </div>
