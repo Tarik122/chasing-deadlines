@@ -103,7 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const elements = {
                 commentBox: document.querySelector('#commento textarea'),
                 submitButton: document.querySelector('#commento .commento-submit-button'),
-                nameField: document.querySelector('#commento input[name="commento-name"]')
+                nameField: document.querySelector('#commento input[name="name"]') ||
+                          document.querySelector('#commento .commento-input-name') ||
+                          document.querySelector('#commento input.commento-name')
             };
             
             console.log('Found Commento elements:', elements);
@@ -114,21 +116,28 @@ document.addEventListener('DOMContentLoaded', function() {
         function submitComment() {
             const elements = findCommentoElements();
             
-            if (!elements.commentBox || !elements.submitButton || !elements.nameField) {
-                console.log('Commento elements not ready, reinitializing...');
+            if (!elements.commentBox || !elements.submitButton) {
+                console.log('Essential Commento elements not ready, reinitializing...');
                 window.commento.main();
                 setTimeout(submitComment, 500);
                 return;
             }
 
             try {
-                // Set the values
-                elements.nameField.value = nameInput.value;
+                // Set the comment text
                 elements.commentBox.value = tempDiv.textContent;
-
-                // Trigger input events
-                elements.nameField.dispatchEvent(new Event('input', { bubbles: true }));
                 elements.commentBox.dispatchEvent(new Event('input', { bubbles: true }));
+
+                // If we have a name field, set it
+                if (elements.nameField) {
+                    elements.nameField.value = nameInput.value;
+                    elements.nameField.dispatchEvent(new Event('input', { bubbles: true }));
+                } else {
+                    // If no name field found, try setting it through Commento's API
+                    if (window.commento && typeof window.commento.setName === 'function') {
+                        window.commento.setName(nameInput.value);
+                    }
+                }
 
                 console.log('About to click submit button');
                 elements.submitButton.click();
