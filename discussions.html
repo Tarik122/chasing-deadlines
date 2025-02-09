@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="discussions.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
+        // Add this before the commentoConfig
+        window.photoData = {
+            1: {
+                title: "3 AM Thoughts",
+                description: "The quiet desperation of another late-night study session, captured in the soft glow of a desk lamp."
+            },
+            2: {
+                title: "Coffee & Contemplation",
+                description: "A moment of reflection amidst a sea of empty coffee cups and scattered notes."
+            },
+            // ... add all your photos
+        };
+
         window.commentoConfig = {
             hideDeleted: true,
             noFonts: true,

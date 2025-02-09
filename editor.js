@@ -133,7 +133,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get photo title from photoData
         if (photoId && window.photoData && window.photoData[photoId]) {
             photoTitle = window.photoData[photoId].title;
-            document.getElementById('photoTitle').textContent = photoTitle;
+            const photoTitleElement = document.getElementById('photoTitle');
+            if (photoTitleElement) {
+                photoTitleElement.textContent = photoTitle;
+                console.log('Set photo title to:', photoTitle);
+            } else {
+                console.error('Photo title element not found');
+            }
+        } else {
+            console.log('No photo ID found in URL or photo data not available', { photoId, photoData: window.photoData });
         }
 
         // Function to submit comment
@@ -157,11 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     photoTitle: photoTitle
                 };
 
+                console.log('Submitting comment with photo info:', { photoId, photoTitle });
+                
                 // Convert to JSON and store in Commento's comment box
                 elements.commentBox.value = JSON.stringify(commentData);
                 elements.commentBox.dispatchEvent(new Event('input', { bubbles: true }));
 
-                console.log('Submitting comment with data:', commentData);
                 elements.submitButton.click();
                 
                 // Clear our form
