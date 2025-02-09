@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Move getCurrentPhotoNumber to the top level
+    function getCurrentPhotoNumber() {
+        // First check URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const photoParam = urlParams.get('photo');
+        if (photoParam) {
+            return photoParam;
+        }
+        
+        // Fallback to checking pathname
+        const path = window.location.pathname;
+        const match = path.match(/photo(\d+)\.html/);
+        return match ? match[1] : null;
+    }
+
+    // Add back button handler right at the start
+    const backButton = document.querySelector('.photo-header .back-button');
+    if (backButton) {
+        const photoNumber = getCurrentPhotoNumber();
+        if (photoNumber) {
+            backButton.href = `photo${photoNumber}.html`;
+        } else {
+            backButton.href = 'index.html';
+        }
+    }
+
     const textarea = document.getElementById('body');
     
     // Format selected text using execCommand
@@ -67,6 +93,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     nameField: !!nameField
                 });
             }, 1000);
+
+            // Handle back button navigation
+            const backButton = document.querySelector('.photo-header .back-button');
+            if (backButton) {
+                const photoNumber = getCurrentPhotoNumber();
+                if (photoNumber) {
+                    backButton.href = `photo${photoNumber}.html`;
+                } else {
+                    backButton.href = 'index.html';
+                }
+            }
         } catch (error) {
             console.error('Error initializing Commento:', error);
             setTimeout(initCommento, 100);
@@ -123,21 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('Found Commento elements:', elements);
             return elements;
-        }
-
-        // Function to get current photo number from URL
-        function getCurrentPhotoNumber() {
-            // First check URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const photoParam = urlParams.get('photo');
-            if (photoParam) {
-                return photoParam;
-            }
-            
-            // Fallback to checking pathname
-            const path = window.location.pathname;
-            const match = path.match(/photo(\d+)\.html/);
-            return match ? match[1] : null;
         }
 
         // Function to submit comment
@@ -228,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Add photo information if available
                     if (commentData.photo) {
-                        photoInfo = `<span class="time-separator">•</span><a href="discussions.html?photo=${commentData.photo.number}" class="comment-photo-link">Photo ${commentData.photo.number}: ${commentData.photo.title}</a>`;
+                        photoInfo = `<span class="time-separator">•</span><a href="discussions.html?photo=${commentData.photo.number}" class="comment-photo-link">Photo ${commentData.photo.number}</a>`;
                     }
 
                     // Use the stored timestamp if available
