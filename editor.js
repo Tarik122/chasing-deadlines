@@ -127,6 +127,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Function to get current photo number from URL
         function getCurrentPhotoNumber() {
+            // First check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const photoParam = urlParams.get('photo');
+            if (photoParam) {
+                return photoParam;
+            }
+            
+            // Fallback to checking pathname
             const path = window.location.pathname;
             const match = path.match(/photo(\d+)\.html/);
             return match ? match[1] : null;
@@ -221,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Add photo information if available
                     if (commentData.photo) {
                         photoInfo = `
-                            <a href="photo${commentData.photo.number}.html" class="comment-photo-link">
+                            <a href="discussions.html?photo=${commentData.photo.number}" class="comment-photo-link">
                                 Photo ${commentData.photo.number}: ${commentData.photo.title}
                             </a>
                         `;

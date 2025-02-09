@@ -11,6 +11,15 @@
     <script>
         // Get the current photo number from URL
         function getCurrentPhotoId() {
+            // First check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const photoParam = urlParams.get('photo');
+            
+            if (photoParam) {
+                return `photo-${photoParam}`;
+            }
+            
+            // Fallback to checking pathname
             const path = window.location.pathname;
             const match = path.match(/photo(\d+)\.html/);
             return match ? `photo-${match[1]}` : 'general';
@@ -21,7 +30,7 @@
             noFonts: true,
             autoInit: false,
             cssOverride: '',
-            pageId: getCurrentPhotoId(), // Use photo-specific ID
+            pageId: getCurrentPhotoId(),
             siteId: 'paste-your-actual-commento-site-id-here',
             commentoAuth: {
                 anonymous: true,
@@ -49,35 +58,37 @@
         <div class="header-actions">⊞</div>
     </div>
 
-    <div class="discussion-form">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Your name">
-        </div>
-
-        <div class="form-group">
-            <label for="body">Body<span class="required">*</span></label>
-            <div class="editor-toolbar">
-                <button type="button" id="boldBtn" title="Bold">B</button>
-                <button type="button" id="italicBtn" title="Italic">I</button>
-                <button type="button" id="strikeBtn" title="Strikethrough">S</button>
-                <button type="button" id="underlineBtn" title="Underline">U</button>
+    <div class="scrollable-content">
+        <div class="discussion-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Your name">
             </div>
-            <textarea id="body" placeholder="Start typing here..."></textarea>
-        </div>
 
-        <div class="form-actions">
-            <button type="submit" class="add-entry">Add Entry</button>
-            <button type="button" class="cancel">Cancel</button>
-        </div>
-    </div>
+            <div class="form-group">
+                <label for="body">Body<span class="required">*</span></label>
+                <div class="editor-toolbar">
+                    <button type="button" id="boldBtn" title="Bold">B</button>
+                    <button type="button" id="italicBtn" title="Italic">I</button>
+                    <button type="button" id="strikeBtn" title="Strikethrough">S</button>
+                    <button type="button" id="underlineBtn" title="Underline">U</button>
+                </div>
+                <textarea id="body" placeholder="Start typing here..."></textarea>
+            </div>
 
-    <!-- Hidden Commento div that will be populated -->
-    <div id="commento" style="position: absolute; left: -9999px;"></div>
-    
-    <!-- Visible comments section that will mirror Commento's content -->
-    <div class="comments-section">
-        <!-- Comments will be dynamically inserted here -->
+            <div class="form-actions">
+                <button type="submit" class="add-entry">Add Entry</button>
+                <button type="button" class="cancel">Cancel</button>
+            </div>
+        </div>
+        
+        <!-- Hidden Commento div -->
+        <div id="commento" style="position: absolute; left: -9999px;"></div>
+        
+        <!-- Visible comments section -->
+        <div class="comments-section">
+            <!-- Comments will be dynamically inserted here -->
+        </div>
     </div>
 
     <script defer src="https://cdn.commento.io/js/commento.js"></script>

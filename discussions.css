@@ -119,10 +119,10 @@ input[type="text"] {
 }
 
 .comments-section {
-    margin-top: 20px;
-    padding: 0 15px;
-    max-height: calc(100vh - 300px);
+    flex: 1;
+    margin: 0 15px 15px;
     overflow-y: auto;
+    padding-right: 15px;
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: #D1D1D6 transparent;
@@ -201,6 +201,8 @@ body {
     background: #F5F5F5;
     overflow: hidden;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #commento {
@@ -227,4 +229,33 @@ body {
 
 .comment-photo-link:hover {
     text-decoration: underline;
+}
+
+/* Fixed elements at top */
+.status-bar,
+.photo-header {
+    flex-shrink: 0; /* Prevent these from shrinking */
+}
+
+/* Create a scrollable container for the form and comments */
+.discussion-form {
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 15px;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Create a wrapper for scrollable content */
+.scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Important for Firefox */
 } 
