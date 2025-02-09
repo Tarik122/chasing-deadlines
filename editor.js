@@ -42,8 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     editorDiv.addEventListener('selectionchange', updateButtonStates);
 
     // Initialize Commento
-    let commentoInstance = null;
-
     function initCommento() {
         // Wait for Commento to load
         if (typeof window.commento === 'undefined') {
@@ -53,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initialize Commento in the hidden div
         window.commento.main();
-        commentoInstance = window.commento;
     }
 
     initCommento();
@@ -70,35 +67,33 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Make sure Commento is initialized
-        if (!commentoInstance) {
-            alert('Comment system is still loading. Please try again in a moment.');
-            return;
-        }
-
         // Create a temporary div to hold the comment HTML
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = commentText;
 
-        // Submit comment through Commento's API
-        commentoInstance.postComment({
-            name: nameInput.value,
-            comment: tempDiv.textContent, // Strip HTML for safety
-            parent: null
-        }, function(error) {
-            if (error) {
-                console.error('Error posting comment:', error);
-                alert('Error posting comment. Please try again.');
-                return;
+        // Get the comment box from Commento
+        const commentBox = document.querySelector('#commento textarea');
+        if (!commentBox) {
+            alert('Comment system is still loading. Please try again in a moment.');
+            return;
+        }
+
+        // Set the comment text and trigger Commento's submit
+        commentBox.value = tempDiv.textContent;
+        const submitButton = document.querySelector('#commento .commento-submit-button');
+        if (submitButton) {
+            // Set the name in Commento's name field if it exists
+            const commentoNameInput = document.querySelector('#commento input[name="commento-name"]');
+            if (commentoNameInput) {
+                commentoNameInput.value = nameInput.value;
             }
             
-            // Clear the form
+            submitButton.click();
+            
+            // Clear our form
             nameInput.value = '';
             editorDiv.innerHTML = '';
-            
-            // Refresh comments
-            commentoInstance.loadComments();
-        });
+        }
     });
 
     // Handle cancel button
@@ -109,39 +104,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Observer to sync Commento comments with our UI
     const commentsObserver = new MutationObserver(function(mutations) {
-        const commentoComments = document.querySelectorAll('#commento .commento-card');
+        const commentoCards = document.querySelectorAll('#commento .commento-card');
         const commentsSection = document.querySelector('.comments-section');
+        
+        if (!commentsSection) return;
         
         // Clear existing comments
         commentsSection.innerHTML = '';
         
         // Convert Commento comments to our UI format
-        commentoComments.forEach(commentoComment => {
-            const name = commentoComment.querySelector('.commento-name').textContent;
-            const body = commentoComment.querySelector('.commento-body').textContent;
-            const time = commentoComment.querySelector('.commento-timeago').textContent;
-            
-            const commentHTML = `
-                <div class="comment">
-                    <div class="comment-header">
-                        <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
-                        <div class="comment-meta">
-                            <div class="commenter-name">${name}</div>
-                            <div class="comment-time">${time}</div>
+        commentoCards.forEach(card => {
+            try {
+                const name = card.querySelector('.commento-name')?.textContent || 'Anonymous';
+                const body = card.querySelector('.commento-body')?.textContent || '';
+                const time = card.querySelector('.commento-timeago')?.textContent || '';
+                
+                const commentHTML = `
+                    <div class="comment">
+                        <div class="comment-header">
+                            <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
+                            <div class="comment-meta">
+                                <div class="commenter-name">${name}</div>
+                                <div class="comment-time">${time}</div>
+                            </div>
+                            <button class="more-options">⋮</button>
                         </div>
-                        <button class="more-options">⋮</button>
+                        <div class="comment-body">${body}</div>
                     </div>
-                    <div class="comment-body">${body}</div>
-                </div>
-            `;
-            
-            commentsSection.insertAdjacentHTML('beforeend', commentHTML);
+                `;
+                
+                commentsSection.insertAdjacentHTML('beforeend', commentHTML);
+            } catch (error) {
+                console.error('Error processing comment:', error);
+            }
         });
     });
 
-    // Start observing the Commento div for changes
-    commentsObserver.observe(document.getElementById('commento'), {
-        childList: true,
-        subtree: true
-    });
+    // Start observing once Commento is loaded
+    const startObserver = () => {
+        const commentoDiv = document.getElementById('commento');
+        if (commentoDiv) {
+            commentsObserver.observe(commentoDiv, {
+                childList: true,
+                subtree: true
+            });
+        } else {
+            setTimeout(startObserver, 100);
+        }
+    };
+
+    startObserver();
 }); 

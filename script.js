@@ -48,25 +48,28 @@ const photoData = {
 // Update clock
 function updateClock() {
     const timeElement = document.querySelector('.status-bar .time');
-    if (!timeElement) return; // Exit if element doesn't exist
+    const monthElement = document.querySelector('.month');
+    const dayElement = document.querySelector('.day');
+    const numberElement = document.querySelector('.number');
     
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
-    // Update time in status bar
-    timeElement.textContent = 
-        `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}`;
-    
-    // Update date card
-    const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
-                   'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    
-    document.querySelector('.month').textContent = months[now.getMonth()];
-    document.querySelector('.day').textContent = days[now.getDay()];
-    document.querySelector('.number').textContent = now.getDate();
+    // Only proceed with elements that exist
+    if (timeElement) {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        timeElement.textContent = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}`;
+        
+        // Only update date elements if they exist
+        if (monthElement && dayElement && numberElement) {
+            const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+                          'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            
+            monthElement.textContent = months[now.getMonth()];
+            dayElement.textContent = days[now.getDay()];
+            numberElement.textContent = now.getDate();
+        }
+    }
 }
 
 setInterval(updateClock, 1000);
