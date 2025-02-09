@@ -125,23 +125,23 @@ document.addEventListener('DOMContentLoaded', function() {
             return elements;
         }
 
-        // Get photo information from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const photoId = urlParams.get('photo');
-        let photoTitle = '';
-        
-        // Get photo title from photoData
-        if (photoId && window.photoData && window.photoData[photoId]) {
-            photoTitle = window.photoData[photoId].title;
-            const photoTitleElement = document.getElementById('photoTitle');
-            if (photoTitleElement) {
-                photoTitleElement.textContent = photoTitle;
-                console.log('Set photo title to:', photoTitle);
-            } else {
-                console.error('Photo title element not found');
+        // Function to get current photo title
+        function getCurrentPhotoTitle() {
+            // Try to get title from page
+            const titleElement = document.querySelector('.photo-title');
+            if (titleElement) {
+                return titleElement.textContent;
             }
-        } else {
-            console.log('No photo ID found in URL or photo data not available', { photoId, photoData: window.photoData });
+            
+            // If no title element found, try to get from URL
+            const photoMatch = window.location.pathname.match(/photo(\d+)\.html/);
+            if (photoMatch) {
+                const photoNumber = photoMatch[1];
+                // Use the photoData from script.js
+                return window.photoData[photoNumber]?.title || `Photo ${photoNumber}`;
+            }
+            
+            return 'General Discussion';
         }
 
         // Function to submit comment
@@ -161,16 +161,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: nameInput.value,
                     body: tempDiv.textContent.trim(),
                     timestamp: new Date().toISOString(),
-                    photoId: photoId,
-                    photoTitle: photoTitle
+                    photoTitle: getCurrentPhotoTitle()
                 };
 
-                console.log('Submitting comment with photo info:', { photoId, photoTitle });
-                
                 // Convert to JSON and store in Commento's comment box
                 elements.commentBox.value = JSON.stringify(commentData);
                 elements.commentBox.dispatchEvent(new Event('input', { bubbles: true }));
 
+                console.log('Submitting comment with data:', commentData);
                 elements.submitButton.click();
                 
                 // Clear our form
@@ -217,14 +215,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 let name = 'Anonymous';
                 let body = commentText;
                 let time = card.querySelector('.commento-timeago')?.textContent || '';
-                let photoRef = '';
+                let photoTitle = 'General Discussion';
 
                 // Try to parse the comment as JSON
                 try {
                     const commentData = JSON.parse(commentText);
                     name = commentData.name || 'Anonymous';
                     body = commentData.body || '';
-                    photoRef = commentData.photoTitle ? ` on "${commentData.photoTitle}"` : '';
+                    photoTitle = commentData.photoTitle || 'General Discussion';
                     
                     // Use the stored timestamp if available
                     if (commentData.timestamp) {
@@ -242,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     body = commentText;
                 }
                 
-                console.log(`Processing comment ${index}:`, { name, body, time });
+                console.log(`Processing comment ${index}:`, { name, body, time, photoTitle });
                 
                 const commentHTML = `
                     <div class="comment">
@@ -250,12 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
                             <div class="comment-meta">
                                 <div class="commenter-name">${name}</div>
-                                <div class="comment-details">
-                                    Posted on ${commentData.photoTitle || 'Unknown Photo'} • ${time}
-                                </div>
+                                <div class="comment-time">${time}</div>
                             </div>
                             <button class="more-options">⋮</button>
                         </div>
+                        <div class="photo-reference">Re: ${photoTitle}</div>
                         <div class="comment-body">${body}</div>
                     </div>
                 `;

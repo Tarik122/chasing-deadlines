@@ -147,15 +147,10 @@ input[type="text"] {
 }
 
 .commenter-name {
-    font-size: 16px;
     font-weight: 500;
-    color: #333;
-    margin-bottom: 2px;
-}
-
-.comment-details {
-    font-size: 14px;
-    color: #666;
+    color: #000;
+    font-size: 15px;
+    line-height: 1.2;
 }
 
 .comment-time {
@@ -175,10 +170,10 @@ input[type="text"] {
 }
 
 .comment-body {
-    margin-top: 8px;
-    margin-left: 36px;
+    color: #000;
     font-size: 15px;
     line-height: 1.4;
+    margin-left: 36px;
 }
 
 body {
@@ -203,25 +198,9 @@ body {
     /* Keep your existing styling */
 }
 
-.photo-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 15px;
-}
-
-.header-info {
-    flex: 1;
-}
-
-.header-subtitle {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2px;
-}
-
-.header-title {
-    font-size: 17px;
+.photo-reference {
+    color: var(--primary-blue);
+    font-size: 13px;
+    margin: -5px 0 8px 36px;
     font-weight: 500;
-    color: white;
 } 
