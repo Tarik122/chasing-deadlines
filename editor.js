@@ -125,23 +125,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return elements;
         }
 
-        // Function to get current photo title
-        function getCurrentPhotoTitle() {
-            // Try to get title from page
-            const titleElement = document.querySelector('.photo-title');
-            if (titleElement) {
-                return titleElement.textContent;
-            }
-            
-            // If no title element found, try to get from URL
-            const photoMatch = window.location.pathname.match(/photo(\d+)\.html/);
-            if (photoMatch) {
-                const photoNumber = photoMatch[1];
-                // Use the photoData from script.js
-                return window.photoData[photoNumber]?.title || `Photo ${photoNumber}`;
-            }
-            
-            return 'General Discussion';
+        // Function to get current photo number from URL
+        function getCurrentPhotoNumber() {
+            const path = window.location.pathname;
+            const match = path.match(/photo(\d+)\.html/);
+            return match ? match[1] : null;
         }
 
         // Function to submit comment
@@ -156,12 +144,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
+                // Get photo information
+                const photoNumber = getCurrentPhotoNumber();
+                const photoTitle = photoData[photoNumber]?.title || 'Unknown Photo';
+
                 // Create a comment object with metadata
                 const commentData = {
                     name: nameInput.value,
                     body: tempDiv.textContent.trim(),
                     timestamp: new Date().toISOString(),
-                    photoTitle: getCurrentPhotoTitle()
+                    photo: {
+                        number: photoNumber,
+                        title: photoTitle
+                    }
                 };
 
                 // Convert to JSON and store in Commento's comment box
@@ -215,15 +210,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 let name = 'Anonymous';
                 let body = commentText;
                 let time = card.querySelector('.commento-timeago')?.textContent || '';
-                let photoTitle = 'General Discussion';
+                let photoInfo = '';
 
                 // Try to parse the comment as JSON
                 try {
                     const commentData = JSON.parse(commentText);
                     name = commentData.name || 'Anonymous';
                     body = commentData.body || '';
-                    photoTitle = commentData.photoTitle || 'General Discussion';
                     
+                    // Add photo information if available
+                    if (commentData.photo) {
+                        photoInfo = `
+                            <a href="photo${commentData.photo.number}.html" class="comment-photo-link">
+                                Photo ${commentData.photo.number}: ${commentData.photo.title}
+                            </a>
+                        `;
+                    }
+
                     // Use the stored timestamp if available
                     if (commentData.timestamp) {
                         const date = new Date(commentData.timestamp);
@@ -240,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     body = commentText;
                 }
                 
-                console.log(`Processing comment ${index}:`, { name, body, time, photoTitle });
+                console.log(`Processing comment ${index}:`, { name, body, time, photoInfo });
                 
                 const commentHTML = `
                     <div class="comment">
@@ -249,10 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="comment-meta">
                                 <div class="commenter-name">${name}</div>
                                 <div class="comment-time">${time}</div>
+                                ${photoInfo}
                             </div>
                             <button class="more-options">⋮</button>
                         </div>
-                        <div class="photo-reference">Re: ${photoTitle}</div>
                         <div class="comment-body">${body}</div>
                     </div>
                 `;
