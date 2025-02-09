@@ -1,0 +1,202 @@
+.discussion-form {
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 15px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.required {
+    color: #FF3B30;
+    margin-left: 2px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E5E5EA;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.editor-toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #E5E5EA;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    background: #F8F9FA;
+}
+
+.editor-toolbar button {
+    padding: 6px 12px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.editor-toolbar button:hover {
+    background: #E5E5EA;
+}
+
+.editor-toolbar button:active {
+    background: #D1D1D6;
+}
+
+.editor-content {
+    width: 100%;
+    height: 120px;
+    padding: 12px;
+    border: 1px solid #E5E5EA;
+    border-radius: 0 0 8px 8px;
+    font-size: 16px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background: white;
+}
+
+.editor-content:focus {
+    outline: none;
+}
+
+.editor-toolbar button.active {
+    background: #D1D1D6;
+    color: var(--primary-blue);
+}
+
+.editor-content blockquote {
+    margin: 0;
+    padding-left: 1em;
+    border-left: 3px solid #ccc;
+    color: #666;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.add-entry {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancel {
+    background: none;
+    border: none;
+    color: #FF3B30;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.comments-section {
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+.comment {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.comment-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.user-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #F2F2F7;
+}
+
+.comment-meta {
+    flex: 1;
+}
+
+.commenter-name {
+    font-weight: 500;
+    color: #000;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.comment-time {
+    color: #666;
+    font-size: 13px;
+    margin-top: 1px;
+}
+
+.more-options {
+    border: none;
+    background: none;
+    color: #666;
+    font-size: 18px;
+    padding: 0 4px;
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+.comment-body {
+    color: #000;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-left: 36px;
+}
+
+body {
+    background: #F5F5F5;
+}
+
+/* Customize Cusdis to match ManageBac style */
+#cusdis_thread {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.cusdis-comment {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    margin-bottom: 15px !important;
+}
+
+.cusdis-comment-header {
+    padding: 16px !important;
+}
+
+.cusdis-comment-body {
+    color: #000 !important;
+    font-size: 15px !important;
+} 

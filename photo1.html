@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo 1 - Chasing Deadlines</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="photo-details.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="status-bar">
+        <span class="time">9:41</span>
+        <span class="battery">64%</span>
+    </div>
+
+    <div class="photo-header">
+        <a href="index.html" class="back-button">
+            <img src="back-svgrepo-com.svg" alt="" class="back-icon">
+        </a>
+        <span class="header-title">Task Details</span>
+        <div class="header-actions">⊞</div>
+    </div>
+
+    <div class="tab-bar">
+        <a href="#" class="tab active">Overview</a>
+        <a href="discussions.html" class="tab">Discussions</a>
+    </div>
+
+    <div class="content">
+        <div class="photo-card">
+            <div class="assessment-status">
+                <img src="clock-svgrepo-com.svg" alt="" class="status-icon">
+                <div class="timer-text-container">
+                    <span id="timer-text">Auto-Submit in </span>
+                    <span id="countdown">30</span>
+                    <span> seconds</span>
+                </div>
+            </div>
+
+            <div class="date-badge">
+                <div class="date-month">FEB</div>
+                <div class="date-day">8</div>
+            </div>
+
+            <h1 class="photo-title">3 AM Thoughts</h1>
+            
+            <div class="photo-tags">
+                <span class="tag">Summative</span>
+                <span class="tag">Photo</span>
+                <span class="tag pending">Pending</span>
+            </div>
+
+            <div class="deadline-info">
+                <img src="clock-svgrepo-com.svg" alt="" class="time-icon">
+                <span>Thursday at 11:55 PM</span>
+            </div>
+
+            <div class="photo-description">
+                A haunting black and white photograph capturing a student's desk illuminated only by a desk lamp in the dead of night. Books and papers are scattered across the surface, a coffee cup sits empty, and the harsh glow of a laptop screen provides an eerie backdrop. The image embodies the solitary struggle of academic pressure and the weight of looming deadlines.
+            </div>
+
+            <div class="photo-specs">
+                <h2>Technical Details</h2>
+                
+                <div class="spec-item">
+                    <div class="spec-header">
+                        <img src="icons8-polaroid-94.png" alt="" class="spec-icon">
+                        <span>Camera</span>
+                    </div>
+                    <span class="spec-value">Nikon FM2</span>
+                </div>
+
+                <div class="spec-item">
+                    <div class="spec-header">
+                        <img src="icons8-film-94.png" alt="" class="spec-icon">
+                        <span>Film</span>
+                    </div>
+                    <span class="spec-value">Ilford HP5+ 400</span>
+                </div>
+
+                <div class="spec-item">
+                    <div class="spec-header">
+                        <img src="ManageBac Icon Set/09-Assessment/Assessment.png" alt="" class="spec-icon">
+                        <span>Print Size</span>
+                    </div>
+                    <span class="spec-value">30x40 cm</span>
+                </div>
+
+                <div class="spec-item">
+                    <div class="spec-header">
+                        <img src="ManageBac Icon Set/08-Additional Curriculum Component/Content.png" alt="" class="spec-icon">
+                        <span>Print Type</span>
+                    </div>
+                    <span class="spec-value">Silver Gelatin</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <img src="ManageBac Icon Set/12-Miscellaneous/School to Home.png" alt="" class="nav-icon">
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <img src="ManageBac Icon Set/09-Assessment/Assessment.png" alt="" class="nav-icon">
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item">
+            <img src="ManageBac Icon Set/12-Miscellaneous/Presentation Mode.png" alt="" class="nav-icon">
+            <span>Quick View</span>
+        </a>
+        <a href="#" class="nav-item">
+            <img src="ManageBac Icon Set/12-Miscellaneous/Messages.png" alt="" class="nav-icon">
+            <span>Info</span>
+        </a>
+        <a href="#" class="nav-item">
+            <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="nav-icon">
+            <span>Credits</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+    <script>
+        let seconds = 30;
+        const countdownElement = document.getElementById('countdown');
+        const timerTextElement = document.getElementById('timer-text');
+        
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if(seconds <= 10) {
+                countdownElement.style.color = '#FF3B30';
+                timerTextElement.style.color = '#FF3B30';
+            }
+            
+            if(seconds <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,236 @@
+:root {
+    --primary-blue: #0066FF;
+    --text-gray: #666666;
+    --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.status-bar {
+    background-color: var(--primary-blue);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 15px;
+    font-size: 14px;
+}
+
+.header {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 15px;
+    padding-bottom: 20px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.author {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.small-logo {
+    width: 24px;
+    height: 24px;
+}
+
+.date-card {
+    background: white;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    position: relative;
+}
+
+.date-info {
+    width: 35%;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    justify-content: center;
+}
+
+.date-info .month {
+    color: var(--text-gray);
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.date-info .day {
+    color: #FF3B30;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.date-info .number {
+    font-size: 42px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1;
+}
+
+.event {
+    width: 65%;
+    margin-left: 20px;
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.event-item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-item.red {
+    background: #FFE8E8;
+    border-left: 3px solid #FF3B2F;
+}
+
+.event-item.green {
+    background: #E8FFE8;
+    border-left: 3px solid #34C759;
+}
+
+.event-item span:first-child {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 2px;
+}
+
+.more-events {
+    font-size: 14px;
+    color: var(--text-gray);
+    padding: 8px 12px;
+    background: #F0F0F0;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.menu-section {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+}
+
+.menu-label {
+    padding: 12px 15px;
+    font-size: 20px;
+    color: #000;
+    font-weight: 500;
+    background: #f5f5f5;
+    z-index: 1;
+}
+
+.menu-grid {
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 10px;
+    padding-bottom: 70px;
+    border-radius: 20px 20px 0 0;
+    background: #f5f5f5;
+    margin-top: -20px;
+    padding-top: 20px;
+}
+
+.menu-item {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 15px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.menu-item span {
+    font-size: 14px;
+    color: #222;
+    font-weight: 600;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    gap: 4px;
+}
+
+.nav-item.active {
+    color: var(--primary-blue);
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Add vertical divider */
+.date-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 35%;
+    width: 1px;
+    height: 100%;
+    background-color: #E5E5EA;
+}

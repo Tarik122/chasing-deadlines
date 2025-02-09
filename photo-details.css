@@ -1,0 +1,269 @@
+:root {
+    --primary-blue: #0066FF;
+    --text-gray: #666666;
+    --border-color: #E5E5EA;
+}
+
+.photo-header {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-button {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.back-icon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.header-actions {
+    margin-left: auto;
+}
+
+.tab-bar {
+    background: var(--primary-blue);
+    padding: 0 15px;
+    display: flex;
+    gap: 25px;
+    padding-bottom: 2px;
+}
+
+.tab {
+    color: rgba(255,255,255,0.7);
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.tab.active {
+    color: white;
+    border-bottom: 3px solid white;
+}
+
+.content {
+    background: #f5f5f5;
+    min-height: calc(100vh - 110px);
+    padding: 12px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.assessment-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #666;
+    font-size: 13px;
+    background: #F8F9FA;
+    padding: 12px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.status-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.5;
+    margin-bottom: 0;
+}
+
+.timer-text-container {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-badge {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 45px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.date-month {
+    background: #FF3B30;
+    color: white;
+    padding: 2px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.date-day {
+    padding: 4px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.photo-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 12px 0;
+    color: #333;
+}
+
+.time-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.time-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+    margin-right: 1px;
+}
+
+.photo-tags {
+    display: flex;
+    gap: 6px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tag {
+    background: #F2F2F7;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.tag.pending {
+    background: #FFF3CD;
+    color: #664003;
+}
+
+.photo-description {
+    color: #333;
+    line-height: 1.6;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.photo-specs {
+    margin-top: 20px;
+    border-top: 1px solid #E5E5EA;
+    padding-top: 15px;
+}
+
+.photo-specs h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #F2F2F7;
+}
+
+.spec-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.spec-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.spec-value {
+    color: #666;
+    font-size: 14px;
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.submit-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+.deadline-info {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.deadline-info .due {
+    color: #664003;
+}
+
+.deadline-info span {
+    color: #666;
+}
+
+.status.pending {
+    margin-left: auto;
+    background: #FFF3CD;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #664003;
+}
+
+#countdown {
+    font-weight: 700;
+    color: var(--primary-blue);
+    min-width: 20px;
+    text-align: center;
+    display: inline-block;
+} 
