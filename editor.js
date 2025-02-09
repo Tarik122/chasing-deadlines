@@ -80,26 +80,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Wait for Commento to be fully loaded
         function submitComment() {
+            const commentoRoot = document.querySelector('#commento');
             const commentBox = document.querySelector('#commento textarea');
             const submitButton = document.querySelector('#commento .commento-submit-button');
             const nameField = document.querySelector('#commento input[name="commento-name"]');
 
+            console.log('Commento elements:', {
+                root: commentoRoot,
+                commentBox: commentBox,
+                submitButton: submitButton,
+                nameField: nameField
+            });
+
             if (!commentBox || !submitButton || !nameField) {
-                // If elements aren't ready yet, try again in a moment
+                console.log('Waiting for Commento elements to load...');
                 setTimeout(submitComment, 100);
                 return;
             }
 
-            // Set the values
-            nameField.value = nameInput.value;
-            commentBox.value = tempDiv.textContent;
+            try {
+                // Set the values
+                nameField.value = nameInput.value;
+                commentBox.value = tempDiv.textContent;
+                console.log('Values set:', {
+                    name: nameField.value,
+                    comment: commentBox.value
+                });
 
-            // Trigger the submit
-            submitButton.click();
+                // Trigger events to ensure Commento recognizes the input
+                nameField.dispatchEvent(new Event('input'));
+                commentBox.dispatchEvent(new Event('input'));
 
-            // Clear our form
-            nameInput.value = '';
-            editorDiv.innerHTML = '';
+                // Trigger the submit
+                console.log('Clicking submit button...');
+                submitButton.click();
+                
+                // Clear our form
+                nameInput.value = '';
+                editorDiv.innerHTML = '';
+                
+                console.log('Form submitted and cleared');
+            } catch (error) {
+                console.error('Error during comment submission:', error);
+                alert('Error submitting comment. Please try again.');
+            }
         }
 
         submitComment();
@@ -113,20 +137,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Observer to sync Commento comments with our UI
     const commentsObserver = new MutationObserver(function(mutations) {
-        const commentoCards = document.querySelectorAll('#commento .commento-card');
-        const commentsSection = document.querySelector('.comments-section');
+        console.log('Mutation observed:', mutations);
         
-        if (!commentsSection) return;
+        const commentoCards = document.querySelectorAll('#commento .commento-card');
+        console.log('Found comment cards:', commentoCards.length);
+        
+        const commentsSection = document.querySelector('.comments-section');
+        if (!commentsSection) {
+            console.log('Comments section not found');
+            return;
+        }
         
         // Clear existing comments
         commentsSection.innerHTML = '';
         
         // Convert Commento comments to our UI format
-        commentoCards.forEach(card => {
+        commentoCards.forEach((card, index) => {
             try {
                 const name = card.querySelector('.commento-name')?.textContent || 'Anonymous';
                 const body = card.querySelector('.commento-body')?.textContent || '';
                 const time = card.querySelector('.commento-timeago')?.textContent || '';
+                
+                console.log(`Processing comment ${index}:`, { name, body, time });
                 
                 const commentHTML = `
                     <div class="comment">
@@ -144,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 commentsSection.insertAdjacentHTML('beforeend', commentHTML);
             } catch (error) {
-                console.error('Error processing comment:', error);
+                console.error(`Error processing comment ${index}:`, error);
             }
         });
     });
