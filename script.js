@@ -47,6 +47,10 @@ const photoData = {
 
 // Update clock
 function updateClock() {
+    // Only run clock updates on pages with the status bar
+    const statusBar = document.querySelector('.status-bar');
+    if (!statusBar) return;
+
     const timeElement = document.querySelector('.status-bar .time');
     const monthElement = document.querySelector('.month');
     const dayElement = document.querySelector('.day');
