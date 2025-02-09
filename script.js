@@ -47,13 +47,16 @@ const photoData = {
 
 // Update clock
 function updateClock() {
+    const timeElement = document.querySelector('.status-bar .time');
+    if (!timeElement) return; // Exit if element doesn't exist
+    
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     
     // Update time in status bar
-    document.querySelector('.status-bar .time').textContent = 
+    timeElement.textContent = 
         `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}`;
     
     // Update date card
