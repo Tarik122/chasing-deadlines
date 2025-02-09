@@ -147,10 +147,15 @@ input[type="text"] {
 }
 
 .commenter-name {
+    font-size: 16px;
     font-weight: 500;
-    color: #000;
-    font-size: 15px;
-    line-height: 1.2;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.comment-details {
+    font-size: 14px;
+    color: #666;
 }
 
 .comment-time {
@@ -170,10 +175,10 @@ input[type="text"] {
 }
 
 .comment-body {
-    color: #000;
+    margin-top: 8px;
+    margin-left: 36px;
     font-size: 15px;
     line-height: 1.4;
-    margin-left: 36px;
 }
 
 body {

@@ -250,7 +250,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="user-icon">
                             <div class="comment-meta">
                                 <div class="commenter-name">${name}</div>
-                                <div class="comment-time">${time}${photoRef}</div>
+                                <div class="comment-details">
+                                    Posted on ${commentData.photoTitle || 'Unknown Photo'} • ${time}
+                                </div>
                             </div>
                             <button class="more-options">⋮</button>
                         </div>
