@@ -202,13 +202,13 @@ body {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
+    right: 0;
     background: white;
     display: flex;
     justify-content: space-around;
     padding: 8px 0;
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-    z-index: 10;
+    z-index: 100;
 }
 
 .nav-item {
@@ -252,4 +252,18 @@ body {
 * {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+}
+
+.content {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-bottom: 80px;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 480px) {
+    .content {
+        height: calc(100vh - 200px);
+        padding-bottom: 100px;
+    }
 }
