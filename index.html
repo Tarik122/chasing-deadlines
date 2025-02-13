@@ -6,8 +6,74 @@
     <title>Chasing Deadlines</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .welcome-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            max-width: 85%;
+            width: 400px;
+            z-index: 1001;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary-blue);
+        }
+        
+        .welcome-text {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .welcome-button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div class="welcome-overlay">
+        <div class="welcome-popup">
+            <h2 class="welcome-title">Welcome</h2>
+            <p class="welcome-text">
+                Welcome to the Chasing Deadlines exhibition. This website is a replica of the ManageBac interface.
+                Each photograph in the physical exhibition has a numbered card that corresponds
+                to its number on this website.
+            </p>
+            <p class="welcome-text">
+                Please take a moment to fill out the Survey after viewing the exhibition.
+            </p>
+            <button class="welcome-button">Got it!</button>
+        </div>
+    </div>
+
     <div class="status-bar">
         <span class="time">9:45</span>
         <span class="battery">64%</span>
@@ -31,7 +97,7 @@
             <div class="event-list">
                 <div class="event-item red">
                     <span>All Day</span>
-                    <span>Deadline linked to Exhibition</span>
+                    <span>Exhibition Day!!!!</span>
                 </div>
                 <div class="event-item green">
                     <span>10:00 AM</span>
@@ -45,7 +111,7 @@
     <div class="menu-section">
         <div class="menu-label">Menu</div>
         <div class="menu-grid">
-            <a href="photo1.html" class="menu-item">
+            <a href="photo1.html?from=home" class="menu-item">
                 <img src="ManageBac Icon Set/12-Miscellaneous/Study & Revision.png" alt="" class="menu-icon">
                 <span>Photo 1</span>
             </a>
@@ -93,24 +159,36 @@
             <img src="ManageBac Icon Set/12-Miscellaneous/School to Home.png" alt="" class="nav-icon">
             <span>Home</span>
         </a>
-        <a href="#" class="nav-item">
-            <img src="ManageBac Icon Set/09-Assessment/Assessment.png" alt="" class="nav-icon">
-            <span>Search</span>
-        </a>
-        <a href="#" class="nav-item">
+        <a href="gallery.html" class="nav-item">
             <img src="ManageBac Icon Set/12-Miscellaneous/Presentation Mode.png" alt="" class="nav-icon">
-            <span>Quick View</span>
+            <span>Gallery</span>
         </a>
-        <a href="#" class="nav-item">
-            <img src="ManageBac Icon Set/12-Miscellaneous/Messages.png" alt="" class="nav-icon">
-            <span>Info</span>
+        <a href="https://forms.gle/i2ELuoSxfWVQaej1A" target="_blank" class="nav-item">
+            <img src="ManageBac Icon Set/09-Assessment/Assessment.png" alt="" class="nav-icon">
+            <span>Survey</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="artist.html" class="nav-item">
+            <img src="ManageBac Icon Set/05-The Key Concepts/Perspective.png" alt="" class="nav-icon">
+            <span>Artist</span>
+        </a>
+        <a href="credits.html" class="nav-item">
             <img src="ManageBac Icon Set/02-Learner Profile/Reflective.png" alt="" class="nav-icon">
             <span>Credits</span>
         </a>
     </nav>
 
     <script src="script.js"></script>
+    <script>
+        // Check if this is the first visit
+        if (!localStorage.getItem('welcomeShown')) {
+            document.querySelector('.welcome-overlay').style.display = 'block';
+            localStorage.setItem('welcomeShown', 'true');
+        }
+        
+        // Close popup when button is clicked
+        document.querySelector('.welcome-button').addEventListener('click', function() {
+            document.querySelector('.welcome-overlay').style.display = 'none';
+        });
+    </script>
 </body>
 </html> 

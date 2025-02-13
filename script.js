@@ -45,6 +45,18 @@ const photoData = {
     }
 };
 
+// Add this function near the top of the file
+function getNavigationSource() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('from') || 'home';
+}
+
+// Add this function to handle back navigation
+function handleBackNavigation() {
+    const source = getNavigationSource();
+    return source === 'gallery' ? 'gallery.html' : 'index.html';
+}
+
 // Update clock
 function updateClock() {
     // Only run clock updates on pages with the status bar
